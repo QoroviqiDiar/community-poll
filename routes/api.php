@@ -25,3 +25,5 @@ Route::delete('polls/{poll}', 'PollsController@delete');
 Route::get('polls/{poll}/questions', 'PollsController@questions');
 
 Route::apiResource('questions', 'QuestionsController');
+
+Route::get('files/get', 'FilesController@show');
