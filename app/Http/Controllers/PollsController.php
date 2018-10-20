@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Poll;
 use function dd;
-use function rescue;
+use function is_nan;
+use function is_null;
 use Validator;
 use Illuminate\Http\Request;
+use App\Http\Resources\Poll as PollResources;
 use function response;
 
 class PollsController extends Controller
@@ -16,9 +18,15 @@ class PollsController extends Controller
         return response()->json(Poll::get(), 200);
     }
 
-    public function show(Poll $poll)
+    public function show($id)
     {
-        return response()->json($poll, 200);
+        $poll = Poll::find($id);
+        if (is_null($poll)){
+            return response()->json(null, 404);
+        }
+
+        $response = new PollResources(Poll::findOrFail($id), 200);
+        return response()->json($response, 200);
     }
 
     public function store(Request $request)
